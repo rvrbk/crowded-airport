@@ -93,8 +93,8 @@ We can have a user account system. Users can sign up for an account. They can lo
 
 ## Data storage
 We can use a database to store the information. We can use a 3rd party database service. We can use a relational database. We can use a non-relational database. We can use a graph database. We can use a document database. We can use a key-value database. We can use a column-oriented database. We can use a time-series database. We can use a graph database. We can use a document database. We can use a key-value database. We can use a column-oriented database. We can use a time-series database.
-
-## Minimal viable product
+ 
+## Minimal viable product (MVP)
 We can start with a minimal viable product. We can start with a list of airports. We can start with a list of information types. We can start with a list of amenities. We can start with a list of airlines. We can start with a list of terminals. We can start with a list of security checkpoints. We can start with a list of immigration. We can start with a list of customs. We can start with a list of baggage claim. We can start with a list of car rentals. We can start with a list of taxis. We can start with a list of buses. We can start with a list of different terminals and their uses (international, domestic, cargo, etc.)
 
 ## User interface
