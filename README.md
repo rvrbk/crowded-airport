@@ -101,13 +101,8 @@ We can start with a minimal viable product. We can start with a list of airports
 We can use a user interface to allow users to add information. We can use a user interface to allow users to search for information. We can use a user interface to allow users to view information. We can use a user interface to allow users to upvote information. We can use a user interface to allow users to delete information. We can use a user interface to allow users to update information.
 
 # Ideas/brainfarts
-- Map in background, initially focussed on the current location, when an airport is selected it focussed on that airport
 - Google Analytics
-- When searching for for instance, Toilet, let all the toilets show on the map 
-- Navigate to thing using google or apple maps
-- Up and downvote
 - meta tags
-- Where am I button which sets the airport when you're at one
 - Stripe payments
 - Buy me a beer
 ## Monetize
