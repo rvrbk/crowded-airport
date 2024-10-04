@@ -9,7 +9,6 @@ export async function GET(request) {
             }
         });
 
-        // todo: fix this
         return NextResponse.json(airports, { status: 200 });
     } catch (error) {
         console.error('Error:', error);
