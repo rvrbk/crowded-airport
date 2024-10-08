@@ -9,25 +9,28 @@ export async function GET(request) {
     const thing = searchParams.get('thing');
    
     try {
-        const where = {};
+        const conditions = {};
 
         if (iata) {
-            where.iata = iata;
+            conditions.where = {
+                iata
+            };
+
+            if (!thing) {
+                conditions.distinct = ['thing'];
+            }
         }
 
         if (thing) {
-            where.thing = {
-                contains: thing
+            conditions.where = {
+                iata,
+                thing: {
+                    contains: thing
+                }
             };
         }
 
-        const things = await prisma.thing.groupBy({
-            by: ['thing'],
-            where: where,
-            _count: {
-                _all: true
-            }
-        });
+        const things = await prisma.thing.findMany(conditions);
 
         return NextResponse.json(things, { status: 200 });
     } catch (error) {
