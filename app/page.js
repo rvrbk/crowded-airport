@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import Select from 'react-select';
 import { MapPinIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
 import haversine from 'haversine-distance';
-import Map from './components/Map';
+import dynamic from 'next/dynamic'
+
+const Map = dynamic(() => import('./components/Map'), { ssr:false });
 
 export default function Home() {
     const [airports, setAirports] = useState([]);
