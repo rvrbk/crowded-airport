@@ -21,7 +21,7 @@ export default function Home() {
     const [appleDevice, isAppleDevice] = useState(true);
 
     const handleWhereAmIClick = () => {
-        if (!navigator.geolocation) {
+        if (typeof window === 'undefined' || !navigator.geolocation) {
             console.warn("Geolocation is not supported by your browser");
         } else {
             setLoading(true);
@@ -71,7 +71,7 @@ export default function Home() {
     }
 
     const handleLocationClick = () => {
-        if (!navigator.geolocation) {
+        if (typeof window === 'undefined' || !navigator.geolocation) {
             console.warn("Geolocation is not supported by your browser");
         } else {
             setLoading(true);
