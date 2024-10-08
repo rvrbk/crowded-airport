@@ -86,7 +86,7 @@ const PopupContents = ({thing, appleDevice, setLoading, setMessage}) => {
                     className={`${voted ? 'bg-gray-300 cursor-not-allowed' : 'bg-red-500 hover:bg-red-600'} flex items-center justify-between w-full text-white px-4 py-2 rounded-md`}
                     disabled={voted}
                 >
-                    <span>It's not here</span>
+                    <span>It is not here</span>
                     <HandThumbDownIcon className="h-5 w-5" />
                 </button>
             </div>
