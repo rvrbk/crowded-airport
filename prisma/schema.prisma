@@ -25,6 +25,8 @@ model Airport {
   altitude Int
   timezone String?
   things Thing[]
+
+  @@map("Airport")
 }
 
 model Thing {
@@ -36,4 +38,6 @@ model Thing {
   airport Airport @relation(fields: [iata], references: [iata])
   iata String
   createdAt DateTime @default(now())
+
+  @@map("Thing")
 }
