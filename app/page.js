@@ -282,8 +282,8 @@ export default function Home() {
     });
 
     return (
-        <div className={`flex items-center justify-center min-h-screen bg-gray-100`}>
-            <div className={`${!loading ? 'hidden' : ''} flex items-center justify-center h-screen fixed inset-0 z-50 bg-white bg-opacity-70`}>
+        <div className={`flex items-center justify-center min-h-dvh bg-gray-100`}>
+            <div className={`${!loading ? 'hidden' : ''} flex items-center justify-center h-dvh fixed inset-0 z-50 bg-white bg-opacity-70`}>
                 <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-indigo-500 border-solid"></div>
             </div>
             <Map 
