@@ -57,7 +57,7 @@ export default function Home() {
                 if (atAirport) {
                     setMessage({
                         type: 'success',
-                        message: `Your at ${atAirport.name}!`
+                        message: `You're at ${atAirport.name}!`
                     });
                 }
                 else {
