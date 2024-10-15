@@ -2,9 +2,8 @@
 
 import "./globals.css";
 import { GoogleAnalytics } from "nextjs-google-analytics";
-import Head from "next/head";
 
-export const metadata = {
+const metadata = {
   title: "Crowded Airport",
   description: "Find your way on any airport in the world.",
   keywords: "airport, coffeeshop, toilet, lost and found, crowd sourced, crowd, finder, aviation, travel, bags, belts, security",
@@ -20,7 +19,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
-            <Head>
+            <head>
                 <title>{metadata.title}</title>
                 <meta name="description" content={metadata.description} />
                 <meta name="keywords" content={metadata.keywords} />
@@ -39,7 +38,7 @@ export default function RootLayout({ children }) {
                 <meta name="twitter:image" content={metadata.openGraph.image} />
 
                 <link rel="icon" href="/favicon.ico" />
-            </Head>
+            </head>
             <body>
                 <GoogleAnalytics trackPageViews />
                 {children}
