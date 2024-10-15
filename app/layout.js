@@ -1,4 +1,5 @@
 import "./globals.css";
+import { GoogleAnalytics } from "nextjs-google-analytics";
 
 export const metadata = {
     title: "Create Next App",
@@ -12,6 +13,7 @@ export default function RootLayout({ children }) {
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
             </head>
             <body>
+                <GoogleAnalytics trackPageViews />
                 {children}
             </body>
         </html>
