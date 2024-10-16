@@ -39,7 +39,7 @@ export default function RootLayout({ children }) {
 
                 <link rel="icon" href="/favicon.ico" />
             </head>
-            <body>
+            <body className="h-dvh">
                 <GoogleAnalytics trackPageViews />
                 {children}
             </body>
