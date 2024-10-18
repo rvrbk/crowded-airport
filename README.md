@@ -1,69 +1,14 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Crowded airport
+Never get lost at the arport again!
 
-## Getting Started
+## Todo
+- Implement TSA wiating times through API
+- Set up pipelines on merge to main
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-# Outline
+## Outline
 A crowdsourced information source on airports worldwide. Think about information such as
-- Location of coffeeshops
-- Location of resturants
-- Location of bathrooms
-- Location of seats
-- Location of power outlets
-- Location of WiFi
-- Name of WiFi provider
-- Location of charging stations
-- Location of luggage carts
-- Location of ATMs
-- Location of lost and found
-- Location of security checkpoints
-- Location of immigration
-- Location of customs
-- Location of baggage claim
-- Location of car rentals
-- Location of taxis
-- Location of buses
-- Locations of different terminals and their uses (international, domestic, cargo, etc.)
-- Airlines currently in the airport
-- Terminal maps
-- Information on current security alerts
-- Information on current travel advisories
-- Information on current weather
-- Information on current delays
-- Information on current construction
-- Information on current events
+- Location of things
+- TSA waiting times
 
 The idea is to have users put in information that they know about an airport, and then have other users be able to search for and find that information. The tricky part is how do you handle the updating of information. How does a coffeeshop get added to the database? Does a user have to go through a bunch of approval processes? How does one verify the information they put in is correct?
 
@@ -105,6 +50,8 @@ We can use a user interface to allow users to add information. We can use a user
 - meta tags
 - Stripe payments
 - Buy me a beer
+- TSA waiting times
+
 ## Monetize
 Yes, you can monetize your crowd-sourced airport place finder by offering companies the option to feature their locations with logos. This approach can provide value to both your business and the companies interested in increased visibility. Here are some considerations to help you implement this strategy effectively: 1. Market Research: • Assess Demand: Determine if there is interest from businesses operating within airports (e.g., restaurants, shops, lounges) to invest in additional visibility on your platform. • Competitor Analysis: Look at similar apps or services to see if they offer paid features and how successful they are. 2. Value Proposition: • Highlight Benefits: Clearly communicate to potential advertisers how featuring their logo will increase foot traffic and brand recognition among travelers. • User Engagement Metrics: Provide data or projections on user engagement to strengthen your pitch. 3. Pricing Strategy: • Tiered Plans: Offer different levels of exposure (e.g., basic listing, logo inclusion, featured placement). • Flexible Options: Consider monthly subscriptions or one-time fees to accommodate different business sizes and budgets. 4. User Experience: • Non-Intrusive Ads: Ensure that paid listings enhance the user experience without overwhelming them with advertisements. • Relevance: Keep the focus on providing valuable and accurate information to users. 5. Transparency and Trust: • Clear Labeling: Mark sponsored or featured listings to maintain transparency with your users. • Reviews and Ratings: Allow users to rate and review all places equally, regardless of sponsorship. 6. Legal and Ethical Considerations: • Advertising Regulations: Comply with advertising laws and regulations in the jurisdictions where your app operates. • Permission for Logos: Obtain proper authorization to use company logos to avoid intellectual property infringements. 7. Technical Implementation: • Easy Integration: Make it simple for companies to upload their logos and manage their listings. • Analytics Dashboard: Provide advertisers with access to analytics to track the performance of their listings. 8. Marketing and Outreach: • Direct Contact: Reach out to businesses directly to offer your advertising opportunities. • Partnerships: Form partnerships with airport authorities or business associations for broader reach. 9. Feedback Loop: • Gather Insights: Regularly solicit feedback from both users and advertisers to improve the service. • Adapt and Evolve: Be prepared to adjust your strategy based on what works and what doesn’t. By offering paid logo placements, you create a revenue stream while providing businesses with a platform to reach potential customers. Just ensure that the monetization strategy aligns with the overall goals of your app and adds value for all stakeholders involved.
 
