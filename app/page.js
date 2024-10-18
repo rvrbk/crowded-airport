@@ -278,6 +278,15 @@ export default function Home() {
     }, [activeForm, selectedAirport]);
 
     useEffect(() => {
+        if (activeForm === 'airport-search') {
+            setMessage({
+                type: 'info',
+                message: 'Never get lost at the airport again!'
+            });
+        }
+    }, [activeForm]);
+
+    useEffect(() => {
         isAppleDevice(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent));
     });
 
@@ -333,7 +342,7 @@ export default function Home() {
                     </div>
                     <div className={activeForm !== 'add-thing' ? 'hidden' : ''}>
                         <form onSubmit={storeThing}>
-                            <input placeholder="The thing" required onInput={(e) => setThingTitle(e.target.value)} value={thingTitle} className="w-full shadow-xl mb-3 px-4 py-2 border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                            <input placeholder="Amenity..." required onInput={(e) => setThingTitle(e.target.value)} value={thingTitle} className="w-full shadow-xl mb-3 px-4 py-2 border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                             <div className="flex items-center mb-3 overflow-hidden w-full shadow-xl border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <input required placeholder="Your current location..." value={currentLocation != null ? `${currentLocation.lat}, ${currentLocation.lng}` : ''} readOnly className="flex-grow px-4 py-2 outline-none" />
                                 <button type="button" onClick={handleLocationClick} className="bg-indigo-500 text-white px-4 py-[10px] flex items-center justify-center hover:bg-indigo-600 focus:outline-none">
