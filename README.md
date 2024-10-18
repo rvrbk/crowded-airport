@@ -4,6 +4,7 @@ Never get lost at the arport again!
 ## Todo
 - Implement TSA wiating times through API
 - Set up pipelines on merge to main
+  - pm2 start "npx next start" --name crowded-airport
 
 ## Outline
 A crowdsourced information source on airports worldwide. Think about information such as
