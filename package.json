@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start:production": "next start -p 3000",
-    "start:test": "next start -p 3001",
+    "start": "pm2 describe crowded-airport > /dev/null && pm2 stop crowded-airport; pm2 start \"npx next start\" --name crowded-airport",
     "lint": "next lint",
     "seed": "node prisma/seed.mjs"
   },
