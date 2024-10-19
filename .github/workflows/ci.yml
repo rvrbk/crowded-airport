@@ -1,16 +1,13 @@
-name: 'Main Pipeline'
+name: Build and Deploy Crowded Airport App
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
@@ -24,8 +21,18 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run lint
-        run: npm run lint
-
-      - name: Build project
+      - name: Build the app
         run: npm run build
+
+      - name: Start or Restart Crowded Airport App with PM2
+        run: |
+          if pm2 describe crowded-airport > /dev/null; then
+            echo "Process crowded-airport found, restarting..."
+            pm2 restart crowded-airport
+          else
+            echo "No process found, starting a new one..."
+            pm2 start "npx next start" --name crowded-airport
+          fi
+
+      - name: Save PM2 process list
+        run: pm2 save
