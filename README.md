@@ -5,6 +5,9 @@ Never get lost at the arport again!
 - Implement TSA wiating times through API
 - Set up pipelines on merge to main
   - pm2 start "npx next start" --name crowded-airport
+- Easter Eggs
+  - Zombie outbreaks on the map
+  - Historical parts of the map
 
 ## Outline
 A crowdsourced information source on airports worldwide. Think about information such as
