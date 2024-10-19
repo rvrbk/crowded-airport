@@ -1,31 +1,48 @@
-name: 'Main Pipeline'
+name: Deploy Crowded Airport App
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Add SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SERVER_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan 5.78.112.252 >> ~/.ssh/known_hosts
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
         with:
-          node-version: '20'
+          host: 5.78.112.252
+          username: root
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /var/www/crowded-airport
+            git pull origin main
+            npm install
+            npm run build
+            if pm2 describe crowded-airport > /dev/null; then
+              echo "Process crowded-airport found, restarting..."
+              pm2 restart crowded-airport
+            else
+              echo "No process found, starting a new one..."
+              pm2 start "npx next start" --name crowded-airport
+            fi
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run lint
-        run: npm run lint
-
-      - name: Build project
-        run: npm run build
+      - name: Save PM2 process list
+        uses: appleboy/ssh-action@master
+        with:
+          host: 5.78.112.252
+          username: root
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: pm2 save
