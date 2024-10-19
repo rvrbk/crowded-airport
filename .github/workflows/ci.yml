@@ -29,15 +29,20 @@ jobs:
           script: |
             cd /var/www/crowded-airport
             git pull origin main
-            npm install
-            npm run build
+
             if pm2 describe crowded-airport > /dev/null; then
-              echo "Process crowded-airport found, restarting..."
-              pm2 restart crowded-airport
-            else
-              echo "No process found, starting a new one..."
-              pm2 start "npx next start" --name crowded-airport
+              echo "Stopping all instances of crowded-airport..."
+              pm2 delete crowded-airport
             fi
+
+            # Install dependencies
+            npm install
+
+            # Build the app
+            npm run build
+
+            # Start the app using PM2
+            pm2 start "npx next start" --name crowded-airport
 
       - name: Save PM2 process list
         uses: appleboy/ssh-action@master
