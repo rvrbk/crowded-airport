@@ -1,5 +1,5 @@
 # Crowded airport
-Never get lost at the arport again!
+Never get lost at the airport again!
 
 ## Todo
 - Implement TSA wiating times through API
@@ -8,6 +8,13 @@ Never get lost at the arport again!
 - Easter Eggs
   - Zombie outbreaks on the map
   - Historical parts of the map
+- Dashboard(s)
+  - Gauges and graphs that show 
+    - How many things where added
+    - To what airports 
+    - What things generate the most clicks
+    - Thing ranking
+    - Airport ranking
 
 ## Outline
 A crowdsourced information source on airports worldwide. Think about information such as
