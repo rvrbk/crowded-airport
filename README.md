@@ -5,6 +5,7 @@ Never get lost at the airport again!
 - Implement TSA wiating times through API
 - Set up pipelines on merge to main
   - pm2 start "npx next start" --name crowded-airport
+- Implement anchor links with iata param
 - Easter Eggs
   - Zombie outbreaks on the map
   - Historical parts of the map
