@@ -7,6 +7,8 @@ import Cookies from 'js-cookie';
 const PopupContents = ({thing, appleDevice, setLoading, setMessage}) => {
     const [voted, hasVoted] = useState(false);
 
+    const navigationUrl = `${appleDevice ? 'http://maps.apple.com/?daddr=' : 'https://www.google.com/maps/dir/?api=1&destination='}${thing.latitude},${thing.longitude}`;
+
     useEffect(() => {
         const votedCookie = Cookies.get(`voted_${thing.id}`);
 
@@ -15,9 +17,51 @@ const PopupContents = ({thing, appleDevice, setLoading, setMessage}) => {
         }
     }, [thing]);
 
+    const handleNavigationClick = async (e) => {
+        e.preventDefault();
+
+        try {
+            await fetch('api/navigation_clicks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    thing_id: thing.id
+                }) 
+            });
+        }
+        catch (error) {
+            console.error(error);
+        }
+
+        window.location.href = navigationUrl;
+    };
+
     const handleThumbClick = async (votes) => {
         setLoading(true);
-        
+
+        let registerEndpoint = 'downvote_clicks';
+
+        if (votes === 'up') {
+            registerEndpoint = 'upvote_clicks';
+        }
+
+        try {
+            await fetch(`api/${registerEndpoint}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    thing_id: thing.id
+                }) 
+            });
+        }
+        catch (error) {
+            console.error(error);
+        }
+
         try {
             const body = {
                 id: thing.id,
@@ -56,8 +100,6 @@ const PopupContents = ({thing, appleDevice, setLoading, setMessage}) => {
         }
     };
     
-    const navigationUrl = `${appleDevice ? 'http://maps.apple.com/?daddr=' : 'https://www.google.com/maps/dir/?api=1&destination='}${thing.latitude},${thing.longitude}`;
-    
     return (
         <div className="min-w-[200px] flex flex-col space-y-2 p-2">
             <div className="flex-grow text-center mb-4">
@@ -65,10 +107,10 @@ const PopupContents = ({thing, appleDevice, setLoading, setMessage}) => {
             </div>
             <div className="mt-auto flex flex-col w-full space-y-2">
                 <a
-                    href={navigationUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-indigo-500 hover:bg-indigo-600 flex items-center justify-between w-full text-white px-4 py-2 rounded-md"
+                    onClick={handleNavigationClick}
+                    className="cursor-pointer bg-indigo-500 hover:bg-indigo-600 flex items-center justify-between w-full text-white px-4 py-2 rounded-md"
                 >
                     <span className="text-white">Navigate</span>
                     <MapPinIcon className="text-white h-5 w-5" />

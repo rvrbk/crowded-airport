@@ -17,6 +17,9 @@ Never get lost at the airport again!
     - Thing ranking
     - Airport ranking
 
+## Admin
+A page with 4 main gauges displaying how many things where added in total, top 5 airports where things where added to (with thing count), Top 5 things added (sililar naming) and what things generated the most clicks (click on marker)
+
 ## Outline
 A crowdsourced information source on airports worldwide. Think about information such as
 - Location of things
