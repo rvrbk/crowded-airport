@@ -5,4 +5,4 @@
 
 */
 -- AlterTable
-ALTER TABLE "Thing" ADD COLUMN     "clicks" INTEGER NOT NULL;
+ALTER TABLE "Thing" ADD COLUMN     "clicks" INTEGER NULL;
