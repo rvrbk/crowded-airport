@@ -37,7 +37,47 @@ model Thing {
   longitude Float
   airport Airport @relation(fields: [iata], references: [iata])
   iata String
+  marker_clicks MarkerClicks[]
+  navigation_clicks NavigationClicks[]
+  upvote_clicks UpvoteClicks[]
+  downvote_clicks DownvoteClicks[]
   createdAt DateTime @default(now())
 
   @@map("Thing")
+}
+
+model MarkerClicks {
+  id Int @id @default(autoincrement())
+  thing Thing @relation(fields: [thing_id], references: [id])
+  thing_id Int
+  createdAt DateTime @default(now())
+
+  @@map("MarkerClicks")
+}
+
+model NavigationClicks {
+  id Int @id @default(autoincrement())
+  thing Thing @relation(fields: [thing_id], references: [id])
+  thing_id Int
+  createdAt DateTime @default(now())
+
+  @@map("NavigationClicks")
+}
+
+model UpvoteClicks {
+  id Int @id @default(autoincrement())
+  thing Thing @relation(fields: [thing_id], references: [id])
+  thing_id Int
+  createdAt DateTime @default(now())
+
+  @@map("UpvoteClicks")
+}
+
+model DownvoteClicks {
+  id Int @id @default(autoincrement())
+  thing Thing @relation(fields: [thing_id], references: [id])
+  thing_id Int
+  createdAt DateTime @default(now())
+
+  @@map("DownvoteClicks")
 }

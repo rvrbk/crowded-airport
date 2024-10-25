@@ -16,6 +16,24 @@ const customIcon = new L.Icon({
     shadowAnchor: [12, 41]
 });
 
+const handleMarkerClick = async (thing) => {
+    try {
+        const body = {
+            thing_id: thing.id
+        };
+
+        const response = await fetch('/api/marker_clicks', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        });
+    } catch (error) {
+        console.error('Error registering click:', error);
+    }
+};
+
 const FlyToLocation = ({ coordinates }) => {
     const map = useMap();
 
@@ -34,7 +52,13 @@ const Map = ({coordinates, selectedThing, similarThings, appleDevice, setLoading
             <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" attribution='&copy; <a href="https://carto.com/">CartoDB</a>' />
             <FlyToLocation coordinates={coordinates} />
             {coordinates && selectedThing && (
-                <Marker position={[coordinates.lat, coordinates.lng]} icon={customIcon}>
+                <Marker 
+                    eventHandlers={{
+                        click: () => handleMarkerClick(selectedThing)
+                    }}
+                    position={[coordinates.lat, coordinates.lng]} 
+                    icon={customIcon}
+                >
                     <Popup>
                         <PopupContents 
                             thing={selectedThing} 
@@ -46,7 +70,15 @@ const Map = ({coordinates, selectedThing, similarThings, appleDevice, setLoading
                 </Marker>
             )}
             {similarThings && similarThings.map((thing) => (
-                <Marker key={thing.id} position={[thing.latitude, thing.longitude]} icon={customIcon}>
+                <Marker
+                    eventHandlers={{
+                        click: () => handleMarkerClick(thing)
+                    }} 
+                    onClick={handleMarkerClick} 
+                    key={thing.id} 
+                    position={[thing.latitude, thing.longitude]} 
+                    icon={customIcon}
+                >
                     <Popup>
                         <PopupContents 
                             thing={thing}   
