@@ -30,6 +30,7 @@ jobs:
             cd /var/www/crowded-airport
             git pull origin main
             npm install
+            npx prisma migrate deploy
             npm run build
             if pm2 describe crowded-airport > /dev/null; then
               echo "Process crowded-airport found, restarting..."
