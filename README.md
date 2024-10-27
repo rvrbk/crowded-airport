@@ -11,12 +11,11 @@ Never get lost at the airport again!
   - Historical parts of the map
 - Dashboard(s)
   - Gauges and graphs that show 
-    - How many things where added
-    - To what airports 
-    - What things generate the most clicks
-    - Thing ranking
-    - Airport ranking
-
+    - Total items added last 7 days compared to prev 7 days - Line chart
+    - Top 5 items added - Pie chart
+    - Top 5 airports having items added - Treemap 
+    - Top 5 items by navigate clicks - Bar chart
+    
 ## Admin
 A page with 4 main gauges displaying how many things where added in total, top 5 airports where things where added to (with thing count), Top 5 things added (sililar naming) and what things generated the most clicks (click on marker)
 

@@ -12,7 +12,9 @@
   "dependencies": {
     "@heroicons/react": "^2.1.5",
     "@prisma/client": "^5.19.1",
+    "apexcharts": "^3.54.1",
     "cookie": "^0.6.0",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
     "haversine-distance": "^1.2.3",
     "js-cookie": "^3.0.5",
@@ -22,6 +24,7 @@
     "nextjs-google-analytics": "^2.3.7",
     "prisma": "^5.19.1",
     "react": "^18",
+    "react-apexcharts": "^1.4.1",
     "react-dom": "^18",
     "react-leaflet": "^4.2.1",
     "react-select": "^5.8.1"
