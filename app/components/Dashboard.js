@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { getPeriodChartAddedAmenities, getTopChartAddedAmenities } from '../lib/dashboard';
+import { getPeriodChartAddedAmenities, getTopChartAddedAmenities, getHeatmapAddedAmenitiesPerAirport } from '../lib/dashboard';
 import { subDays, addDays, startOfDay, format } from 'date-fns';
 
 const Dashboard = () => {
@@ -15,7 +15,7 @@ const Dashboard = () => {
 
     // Transform data for period amenities chart
     useEffect(() => {
-        const fetchAddedAmenities = async () => {
+        const handle = async () => {
             let amenities = [];
             let currentPeriodSeries = [];
             let previousPeriodSeries = [];
@@ -84,12 +84,12 @@ const Dashboard = () => {
             setPeriodAddedAmenitiesCategories(categories);
         };
 
-        fetchAddedAmenities();
+        handle();
     }, []);
 
     // Tranform data for top amenities chart
     useEffect(() => {
-        const fetchAddedAmenities = async () => {
+        const handle = async () => {
             let amenities = [];
             let series = [];
             let labels = [];
@@ -110,7 +110,35 @@ const Dashboard = () => {
             setTopAddedAmenitiesLabels(labels);
         };
 
-        fetchAddedAmenities();
+        handle();
+    }, []);
+
+    // Tranform data for heatmap
+    useEffect(() => {
+        const handle = async () => {
+            let amenities = [];
+            let series = [];
+            let labels = [];
+
+            try {
+                amenities = await getHeatmapAddedAmenitiesPerAirport();
+            } catch (error) {
+                console.error("Error", error);
+            }
+
+            console.log(ameneties);
+
+            amenities.forEach((amenity) => {
+                console.log(amenity._count.thing);
+                labels.push(amenity.thing);
+                series.push(amenity._count.thing);
+            });
+
+            setTopAddedAmenitiesSeries(series);
+            setTopAddedAmenitiesLabels(labels);
+        };
+
+        handle();
     }, []);
 
     // Chart options and data
