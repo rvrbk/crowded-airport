@@ -418,7 +418,7 @@ export default function Home() {
                         <p className="text-gray-700 mb-4">
                         Crowded Airport is a crowd-sourced platform that allows travelers to find and add amenities in airports worldwide. By contributing information about amenities such as restrooms, lounges, and restaurants, you help fellow travelers easily locate essential services.
 <br /><br />
-To add an amenity, simply select an airport and click the "I know where something is" button. This lets you mark the location of the amenity so other travelers can find it.
+To add an amenity, simply select an airport and click the &#34;I know where something is&#34; button. This lets you mark the location of the amenity so other travelers can find it.
 <br /><br />
 Your contributions make it easier for everyone to navigate busy airports!
                         </p>
