@@ -16,6 +16,9 @@ Never get lost at the airport again!
     - What things generate the most clicks
     - Thing ranking
     - Airport ranking
+- Explanation of how it works
+  - Emphasis on the crowd sourced aspect of it, maybe some rewards for people who add things
+    - Option for searcher to send a (predefined) message to the adder? 
 
 ## Admin
 A page with 4 main gauges displaying how many things where added in total, top 5 airports where things where added to (with thing count), Top 5 things added (sililar naming) and what things generated the most clicks (click on marker)
