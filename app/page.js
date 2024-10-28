@@ -21,7 +21,9 @@ export default function Home() {
     const [message, setMessage] = useState(null);
     const [loading, setLoading] = useState(false);
     const [appleDevice, isAppleDevice] = useState(true);
-
+    const [isFirstVisit, setIsFirstVisit] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
+    
     const handleWhereAmIClick = () => {
         if (typeof window === 'undefined' || !navigator.geolocation) {
             console.warn("Geolocation is not supported by your browser");
@@ -290,6 +292,21 @@ export default function Home() {
         isAppleDevice(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent));
     });
 
+    useEffect(() => {
+        const hasVisited = localStorage.getItem('hasVisited');
+        if (!hasVisited) {
+            setIsFirstVisit(true);
+            localStorage.setItem('hasVisited', 'true');
+        }
+    }, []);
+
+    const handleHelpClick = () => {
+        setIsFirstVisit(false);
+        setShowPopup(true);
+    };
+
+    const closePopup = () => setShowPopup(false);
+
     return (
         <div className={`flex items-center justify-center h-dvh bg-gray-100`}>
             <div className={`${!loading ? 'hidden' : ''} flex items-center justify-center h-dvh fixed inset-0 z-50 bg-white bg-opacity-70`}>
@@ -384,6 +401,36 @@ export default function Home() {
                     <span>Back</span>
                 </button>
             </div>
+            <div className="absolute top-4 right-4">
+                <button 
+                    className={`bg-indigo-500 text-white border-2 border-white rounded-full h-8 w-8 flex items-center justify-center shadow-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isFirstVisit ? 'animate-buzz' : ''}`}
+                    aria-label="Help"
+                    onClick={handleHelpClick}
+                >
+                    ?
+                </button>
+            </div>
+
+            {showPopup && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-md shadow-lg max-w-sm w-full text-center">
+                        <h2 className="text-lg font-semibold mb-2">Welcome to Crowded Airport</h2>
+                        <p className="text-gray-700 mb-4">
+                        Crowded Airport is a crowd-sourced platform that allows travelers to find and add amenities in airports worldwide. By contributing information about amenities such as restrooms, lounges, and restaurants, you help fellow travelers easily locate essential services.
+<br /><br />
+To add an amenity, simply select an airport and click the "I know where something is" button. This lets you mark the location of the amenity so other travelers can find it.
+<br /><br />
+Your contributions make it easier for everyone to navigate busy airports!
+                        </p>
+                        <button
+                            onClick={closePopup}
+                            className="mt-4 bg-indigo-500 text-white px-4 py-2 rounded-md shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        >
+                            Got it!
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     )
 } 
