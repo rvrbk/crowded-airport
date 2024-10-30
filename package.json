@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "pm2 describe crowded-airport > /dev/null && pm2 stop crowded-airport; pm2 start \"npx next start\" --name crowded-airport",
     "lint": "next lint",
-    "seed": "node prisma/seed.mjs"
+    "seed_airports": "node prisma/seed_airports.mjs",
+    "seed_amenities": "node prisma/seed_amenities.mjs"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",

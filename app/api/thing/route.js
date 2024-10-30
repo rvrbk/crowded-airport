@@ -30,6 +30,10 @@ export async function GET(request) {
             };
         }
 
+        conditions.orderBy = {
+            thing: 'asc'
+        }
+
         const things = await prisma.thing.findMany(conditions);
 
         return NextResponse.json(things, { status: 200 });
