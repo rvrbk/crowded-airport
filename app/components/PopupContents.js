@@ -18,8 +18,6 @@ const PopupContents = ({thing, appleDevice, setLoading, setMessage}) => {
     }, [thing]);
 
     const handleNavigationClick = async (e) => {
-        e.preventDefault();
-
         try {
             await fetch('api/navigation_clicks', {
                 method: 'POST',
@@ -34,8 +32,6 @@ const PopupContents = ({thing, appleDevice, setLoading, setMessage}) => {
         catch (error) {
             console.error(error);
         }
-
-        window.location.href = navigationUrl;
     };
 
     const handleThumbClick = async (votes) => {
@@ -102,11 +98,12 @@ const PopupContents = ({thing, appleDevice, setLoading, setMessage}) => {
     
     return (
         <div className="min-w-[200px] flex flex-col space-y-2 p-2">
-            <div className="flex-grow text-center mb-4">
-                <h3 className="font-pacifico text-indigo-500 text-2xl">{thing.thing}</h3>
+            <div className="flex-grow mb-4">
+                <h3 className="text-indigo-500 text-2xl">{thing.thing}</h3>
             </div>
             <div className="mt-auto flex flex-col w-full space-y-2">
                 <a
+                    href={navigationUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={handleNavigationClick}

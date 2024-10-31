@@ -6,6 +6,11 @@ dotenv.config();
 const prisma = new PrismaClient();
 
 async function fetchAndInsertAmenities() {
+    if (process.env.NEXT_PUBLIC_EVIRONMENT === 'develop') {
+        await prisma.$queryRaw`TRUNCATE TABLE "Thing" CASCADE`;
+        await prisma.$queryRaw`TRUNCATE TABLE "PlacesImport" CASCADE`;
+    }
+
     // Fetching IATA codes already in placesImport
     const usedIATAs = await prisma.placesImport.findMany({
         select: {
@@ -27,7 +32,7 @@ async function fetchAndInsertAmenities() {
     // Iterate through each airport and fetch amenities
     for (const airport of airports) {
         try {
-            const response = await fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${airport.latitude},${airport.longitude}&radius=4000&key=${process.env.GOOGLE_PLACES_API_KEY}`, {
+            const response = await fetch(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${airport.latitude},${airport.longitude}&radius=1500&type=restaurant|bar|cafe|bakery|store|clothing_store|convenience_store|car_rental|bus_station|subway_station|train_station&key=${process.env.GOOGLE_PLACES_API_KEY}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
