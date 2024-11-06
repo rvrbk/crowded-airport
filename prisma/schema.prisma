@@ -10,82 +10,105 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Airport {
-  id Int @id @default(autoincrement())
-  name String
-  city String?
-  country String
-  iata String @unique
-  icao String
-  latitude Float
+  id        Int     @id @default(autoincrement())
+  name      String
+  city      String?
+  country   String
+  iata      String  @unique
+  icao      String
+  latitude  Float
   longitude Float
-  altitude Int
-  timezone String?
-  things Thing[]
+  altitude  Int
+  timezone  String?
+  things    Thing[]
 
   @@map("Airport")
 }
 
 model Thing {
-  id Int @id @default(autoincrement())
-  thing String
-  votes Int @default(5)
-  latitude Float
-  longitude Float
-  airport Airport @relation(fields: [iata], references: [iata])
-  iata String
-  marker_clicks MarkerClicks[]
+  id                Int                @id @default(autoincrement())
+  thing             String
+  votes             Int                @default(5)
+  latitude          Float
+  longitude         Float
+  airport           Airport            @relation(fields: [iata], references: [iata])
+  iata              String
+  marker_clicks     MarkerClicks[]
   navigation_clicks NavigationClicks[]
-  upvote_clicks UpvoteClicks[]
-  downvote_clicks DownvoteClicks[]
-  createdAt DateTime @default(now())
+  upvote_clicks     UpvoteClicks[]
+  downvote_clicks   DownvoteClicks[]
+  createdAt         DateTime           @default(now())
+  UserThing         UserThing[]
 
   @@map("Thing")
 }
 
 model MarkerClicks {
-  id Int @id @default(autoincrement())
-  thing Thing @relation(fields: [thing_id], references: [id])
-  thing_id Int
+  id        Int      @id @default(autoincrement())
+  thing     Thing    @relation(fields: [thing_id], references: [id])
+  thing_id  Int
   createdAt DateTime @default(now())
 
   @@map("MarkerClicks")
 }
 
 model NavigationClicks {
-  id Int @id @default(autoincrement())
-  thing Thing @relation(fields: [thing_id], references: [id])
-  thing_id Int
+  id        Int      @id @default(autoincrement())
+  thing     Thing    @relation(fields: [thing_id], references: [id])
+  thing_id  Int
   createdAt DateTime @default(now())
 
   @@map("NavigationClicks")
 }
 
 model UpvoteClicks {
-  id Int @id @default(autoincrement())
-  thing Thing @relation(fields: [thing_id], references: [id])
-  thing_id Int
+  id        Int      @id @default(autoincrement())
+  thing     Thing    @relation(fields: [thing_id], references: [id])
+  thing_id  Int
   createdAt DateTime @default(now())
 
   @@map("UpvoteClicks")
 }
 
 model DownvoteClicks {
-  id Int @id @default(autoincrement())
-  thing Thing @relation(fields: [thing_id], references: [id])
-  thing_id Int
+  id        Int      @id @default(autoincrement())
+  thing     Thing    @relation(fields: [thing_id], references: [id])
+  thing_id  Int
   createdAt DateTime @default(now())
 
   @@map("DownvoteClicks")
 }
 
 model PlacesImport {
-  id Int @id @default(autoincrement())
-  iata String?
+  id        Int      @id @default(autoincrement())
+  iata      String?
   createdAt DateTime @default(now())
 
   @@map("PlacesImport")
+}
+
+model User {
+  id        Int         @id @default(autoincrement())
+  email     String
+  password  String?
+  name      String
+  createdAt DateTime    @default(now())
+  UserThing UserThing[]
+
+  @@map("User")
+}
+
+model UserThing {
+  id        Int      @id @default(autoincrement())
+  thing     Thing    @relation(fields: [thing_id], references: [id])
+  thing_id  Int
+  user      User     @relation(fields: [user_id], references: [id])
+  user_id   Int
+  createdAt DateTime @default(now())
+
+  @@map("UserThing")
 }
