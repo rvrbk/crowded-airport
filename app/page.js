@@ -193,9 +193,7 @@ export default function Home() {
         });
     }
 
-    const storeThing = async (e) => {
-        e.preventDefault();
-
+    const storeThing = async () => {
         if (!currentLocation) {
             setMessage({
                 type: 'error',
@@ -337,31 +335,50 @@ Your contributions make it easier for everyone to navigate busy airports!</>)});
         setIwantToAdoptChecked(checked);
     };
 
+    const setLocalUser = () => {
+        localStorage.setItem('user', JSON.stringify({
+            'email': userEmail
+        }));
+    };
+
     const handleUserEmailInput = async (value) => {
         setUserEmail(value);
 
-        try {
-            const response = await fetch(`/api/user?email=${value}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-        
-            if (response.ok) {
-                const data = await response.json();
-                
-                if (data) {
-                    setUserName(data.name);
-                }
-            } else {
-                setMessage('Failed to get data');
-            } 
-        } catch (error) {
-            console.error('Error getting data:', error);
-            setMessage('An error occurred');
+        if (value.length > 0) {
+            try {
+                const response = await fetch(`/api/user?email=${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+            
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    if (data) {
+                        setUserName(data.name);
+                    }
+                } else {
+                    setMessage('Failed to get data');
+                } 
+            } catch (error) {
+                console.error('Error getting data:', error);
+                setMessage('An error occurred');
+            }
         }
     };
+
+    useEffect(() => {
+        if (activeForm === 'add-thing') {
+            if (localStorage.getItem('user') !== null) {
+                const user = JSON.parse(localStorage.getItem('user'));
+    
+                setUserEmail(user.email);
+                handleUserEmailInput(user.email);
+            }
+        }
+    }, [activeForm]);
 
     const closePopup = () => setShowPopup(false);
 
@@ -416,7 +433,15 @@ Your contributions make it easier for everyone to navigate busy airports!</>)});
                         <button name="add" onClick={() => setActiveForm('add-thing')} className="w-full mb-3 shadow-xl px-4 py-2 bg-indigo-500 text-white rounded-md shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">I know where something is</button>
                     </div>
                     <div className={activeForm !== 'add-thing' ? 'hidden' : ''}>
-                        <form onSubmit={storeThing}>
+                        <form onSubmit={(e) => {
+                                e.preventDefault();
+
+                                if (userEmail !== '') {
+                                    setLocalUser();
+                                }
+
+                                storeThing();
+                            }}>
                             <input placeholder="Amenity..." required onInput={(e) => setThingTitle(e.target.value)} value={thingTitle} className="w-full shadow-xl mb-3 px-4 py-2 border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                             <div className="flex items-center mb-3 overflow-hidden w-full shadow-xl border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <input required placeholder="Your current location..." value={currentLocation != null ? `${currentLocation.lat}, ${currentLocation.lng}` : ''} readOnly className="flex-grow px-4 py-2 outline-none" />

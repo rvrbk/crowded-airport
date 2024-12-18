@@ -60,16 +60,23 @@ export async function POST(request) {
             });
 
             if (userName && userEmail) {
-                let user = await prisma.user.update({
+                let user = await prisma.user.findUnique({
                     where: {
                         email: userEmail
-                    },
-                    data: {
-                        name: userName
                     }
                 });
                 
-                if (!user) {
+                if (user) {
+                    user = await prisma.user.update({
+                        where: {
+                            email: userEmail
+                        },
+                        data: {
+                            name: userName
+                        }
+                    });
+                }
+                else {
                     user = await prisma.user.create({
                         data: {
                             name: userName,
