@@ -327,7 +327,7 @@ Your contributions make it easier for everyone to navigate busy airports!</>)});
         setIsFirstVisit(false);
         setPopupContents({
             title: 'Adopting an Amenity',
-            contents: (<>Curious about how popular an airport amenity is? Adopt it and receive weekly updates on how often it gets clicked! It's a fun, light-hearted way to connect with your favorite spots at the airport. Whether it's a comfy lounge chair or a bustling café, adopting an amenity is like having a little piece of the airport all to yourself. Join in, adopt an amenity, and enjoy your weekly "popularity report" on the goings-on at your chosen spot!</>)});
+            contents: (<>Curious about how popular an airport amenity is? Adopt it and receive weekly updates on how often it gets clicked! It&apos;s a fun, light-hearted way to connect with your favorite spots at the airport. Whether it&apos;s a comfy lounge chair or a bustling café, adopting an amenity is like having a little piece of the airport all to yourself. Join in, adopt an amenity, and enjoy your weekly &quot;popularity report&quot; on the goings-on at your chosen spot!</>)});
         setShowPopup(true);
     };
 
