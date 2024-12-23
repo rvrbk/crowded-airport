@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Weekly Amenity Updates</title>
+</head>
+<body style="font-family: Arial, sans-serif; color: #333;">
+    <img src="https://crowded-airport.com/email.jpg" alt="Crowded Airport Header" style="width: 100%; height: auto;">
+    <h1 style="color: #6366F1;">Hey {{name}}!</h1>
+
+    <p>We’re excited to bring you this week’s updates for the amenities you've adopted at various airports. Here’s a look at how each one performed:</p>
+
+    {{#each amenities}}
+    <div style="background-color: #e6e6e6; border-radius: 8px; padding: 20px; margin-top: 20px;">
+        <h2 style="color: #6366F1; font-size: 16px; margin-bottom: 0;">Amenity Spotlight: {{this.thing.thing}} @ {{this.thing.airport.name}}</h2>
+        {{#if this.navigationClicks.length}}
+            <p><strong>Guided Adventures:</strong> A total of <strong>{{this.navigationClicks.length}}</strong> travelers navigated to your amenity this week. Great job in helping them find their way!</p>
+        {{/if}}
+        {{#if this.upvoteClicks.length}}
+            <p><strong>Votes This Week:</strong> Received <strong>{{this.upvoteClicks.length}}</strong> votes, bringing the total score to <strong>{{this.thing.votes}}</strong>/5.</p>
+        {{else}}
+            <p><strong>Votes This Week:</strong> This amenity didn't receive any votes this week but is still going strong at <strong>{{this.thing.votes}}</strong>/5.</p>
+        {{/if}}
+    </div>
+    {{/each}}
+
+    <p>Wishing you a fantastic week ahead and safe travels wherever you are!</p>
+
+    <p>Warm regards,</p>
+    <strong>Rik Verbeek</strong><br><br>
+    <strong>Crowded Airport</strong> – Where Your Contributions Make Journeys Brighter!
+</body>
+</html>

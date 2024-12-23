@@ -45,7 +45,7 @@ export async function GET(request) {
 
 export async function POST(request) {
     try {
-        const { thing, description, iata, latitude, longitude } = await request.json();
+        const { thing, iata, latitude, longitude, userName, userEmail } = await request.json();
 
         if (thing && iata && longitude && latitude) {
             const data = {
@@ -58,6 +58,40 @@ export async function POST(request) {
             const newThing = await prisma.thing.create({
                 data,
             });
+
+            if (userName && userEmail) {
+                let user = await prisma.user.findUnique({
+                    where: {
+                        email: userEmail
+                    }
+                });
+                
+                if (user) {
+                    user = await prisma.user.update({
+                        where: {
+                            email: userEmail
+                        },
+                        data: {
+                            name: userName
+                        }
+                    });
+                }
+                else {
+                    user = await prisma.user.create({
+                        data: {
+                            name: userName,
+                            email: userEmail
+                        }
+                    });
+                }
+
+                await prisma.userThing.create({
+                    data: {
+                        user_id: user.id,
+                        thing_id: newThing.id
+                    }
+                });
+            }
 
             return NextResponse.json(newThing, { status: 200 });
         }

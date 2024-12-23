@@ -5,8 +5,9 @@ import Select from 'react-select';
 import { MapPinIcon, ArrowLeftIcon } from '@heroicons/react/24/solid';
 import haversine from 'haversine-distance';
 import dynamic from 'next/dynamic'
+import { configDotenv } from 'dotenv';
 
-const Map = dynamic(() => import('./components/Map'), { ssr:false });
+const Map = dynamic(() => import('./components/Map'), { ssr: false });
 
 export default function Home() {
     const [airports, setAirports] = useState([]);
@@ -23,6 +24,10 @@ export default function Home() {
     const [appleDevice, isAppleDevice] = useState(true);
     const [isFirstVisit, setIsFirstVisit] = useState(false);
     const [showPopup, setShowPopup] = useState(false);
+    const [popupContents, setPopupContents] = useState(null);
+    const [userName, setUserName] = useState('');
+    const [userEmail, setUserEmail] = useState('');
+    const [iWantToAdoptChecked, setIwantToAdoptChecked] = useState(false);
     
     const handleWhereAmIClick = () => {
         if (typeof window === 'undefined' || !navigator.geolocation) {
@@ -188,9 +193,7 @@ export default function Home() {
         });
     }
 
-    const storeThing = async (e) => {
-        e.preventDefault();
-
+    const storeThing = async () => {
         if (!currentLocation) {
             setMessage({
                 type: 'error',
@@ -213,6 +216,11 @@ export default function Home() {
                 body.longitude = currentLocation.lng;
             }
 
+            if (iWantToAdoptChecked) {
+                body.userName = userName;
+                body.userEmail = userEmail;
+            }
+
             const response = await fetch('/api/thing', {
                 method: 'POST',
                 headers: {
@@ -226,6 +234,9 @@ export default function Home() {
             if (response.ok) {
                 setThingTitle('');
                 setCurrentLocation(null);
+                setUserName('');
+                setUserEmail('');
+                setIwantToAdoptChecked(false);
 
                 setMessage({
                     type: 'success',
@@ -302,8 +313,72 @@ export default function Home() {
 
     const handleHelpClick = () => {
         setIsFirstVisit(false);
+        setPopupContents({
+            title: 'Welcome to Crowded Airport',
+            contents: (<>Crowded Airport is a crowd-sourced platform that allows travelers to find and add amenities in airports worldwide. By contributing information about amenities such as restrooms, lounges, and restaurants, you help fellow travelers easily locate essential services.
+<br /><br />
+To add an amenity, simply select an airport and click the &#34;I know where something is&#34; button. This lets you mark the location of the amenity so other travelers can find it.
+<br /><br />
+Your contributions make it easier for everyone to navigate busy airports!</>)});
         setShowPopup(true);
     };
+
+    const handleAdoptionHelpClick = () => {
+        setIsFirstVisit(false);
+        setPopupContents({
+            title: 'Adopting an Amenity',
+            contents: (<>Curious about how popular an airport amenity is? Adopt it and receive weekly updates on how often it gets clicked! It's a fun, light-hearted way to connect with your favorite spots at the airport. Whether it's a comfy lounge chair or a bustling café, adopting an amenity is like having a little piece of the airport all to yourself. Join in, adopt an amenity, and enjoy your weekly "popularity report" on the goings-on at your chosen spot!</>)});
+        setShowPopup(true);
+    };
+
+    const handleIwantToAdoptCheckboxClick = (checked) => {
+        setIwantToAdoptChecked(checked);
+    };
+
+    const setLocalUser = () => {
+        localStorage.setItem('user', JSON.stringify({
+            'email': userEmail
+        }));
+    };
+
+    const handleUserEmailInput = async (value) => {
+        setUserEmail(value);
+
+        if (value.length > 0) {
+            try {
+                const response = await fetch(`/api/user?email=${value}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+            
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    if (data) {
+                        setUserName(data.name);
+                    }
+                } else {
+                    setMessage('Failed to get data');
+                } 
+            } catch (error) {
+                console.error('Error getting data:', error);
+                setMessage('An error occurred');
+            }
+        }
+    };
+
+    useEffect(() => {
+        if (activeForm === 'add-thing') {
+            if (localStorage.getItem('user') !== null) {
+                const user = JSON.parse(localStorage.getItem('user'));
+    
+                setUserEmail(user.email);
+                handleUserEmailInput(user.email);
+            }
+        }
+    }, [activeForm]);
 
     const closePopup = () => setShowPopup(false);
 
@@ -358,14 +433,43 @@ export default function Home() {
                         <button name="add" onClick={() => setActiveForm('add-thing')} className="w-full mb-3 shadow-xl px-4 py-2 bg-indigo-500 text-white rounded-md shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">I know where something is</button>
                     </div>
                     <div className={activeForm !== 'add-thing' ? 'hidden' : ''}>
-                        <form onSubmit={storeThing}>
+                        <form onSubmit={(e) => {
+                                e.preventDefault();
+
+                                if (userEmail !== '') {
+                                    setLocalUser();
+                                }
+
+                                storeThing();
+                            }}>
                             <input placeholder="Amenity..." required onInput={(e) => setThingTitle(e.target.value)} value={thingTitle} className="w-full shadow-xl mb-3 px-4 py-2 border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                             <div className="flex items-center mb-3 overflow-hidden w-full shadow-xl border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                                 <input required placeholder="Your current location..." value={currentLocation != null ? `${currentLocation.lat}, ${currentLocation.lng}` : ''} readOnly className="flex-grow px-4 py-2 outline-none" />
                                 <button type="button" onClick={handleLocationClick} className="bg-indigo-500 text-white px-4 py-[10px] flex items-center justify-center hover:bg-indigo-600 focus:outline-none">
                                     <MapPinIcon className="h-5 w-5" />
-                                </button> 
+                                </button>
                             </div>
+                            <div className="flex items-center mb-3">
+                                <label>
+                                <input
+                                    type="checkbox"
+                                    onClick={(e) => handleIwantToAdoptCheckboxClick(e.target.checked)}
+                                    checked={iWantToAdoptChecked}
+                                    className="px-4 py-2"
+                                />
+                                <span className="ml-2">I want to adopt this amenity</span>
+                                </label>
+                                <button 
+                                    type="button"
+                                    class="ml-2 bg-indigo-500 text-white border-2 border-white rounded-full h-6 w-6 flex items-center justify-center shadow-xl focus:outline-none focus:ring-2 focus:ring-indigo-500" 
+                                    aria-label="Help"
+                                    onClick={handleAdoptionHelpClick}
+                                >?</button>
+                            </div>
+                            {iWantToAdoptChecked && (<>
+                                <input type="email" required placeholder="Your e-mail addess..." onInput={(e) => handleUserEmailInput(e.target.value)} value={userEmail} className="w-full shadow-xl mb-3 px-4 py-2 border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                                <input placeholder="Your name..." required onInput={(e) => setUserName(e.target.value)} value={userName} className="w-full shadow-xl mb-3 px-4 py-2 border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                            </>)}
                             <div className="flex items-center space-x-2"> 
                                 <button 
                                     onClick={() => {
@@ -414,14 +518,8 @@ export default function Home() {
             {showPopup && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded-md shadow-lg max-w-sm w-full text-center">
-                        <h2 className="text-lg font-semibold mb-2">Welcome to Crowded Airport</h2>
-                        <p className="text-gray-700 mb-4">
-                        Crowded Airport is a crowd-sourced platform that allows travelers to find and add amenities in airports worldwide. By contributing information about amenities such as restrooms, lounges, and restaurants, you help fellow travelers easily locate essential services.
-<br /><br />
-To add an amenity, simply select an airport and click the &#34;I know where something is&#34; button. This lets you mark the location of the amenity so other travelers can find it.
-<br /><br />
-Your contributions make it easier for everyone to navigate busy airports!
-                        </p>
+                        <h2 className="text-lg font-semibold mb-2">{popupContents.title}</h2>
+                        <p className="text-gray-700 mb-4">{popupContents.contents}</p>
                         <button
                             onClick={closePopup}
                             className="mt-4 bg-indigo-500 text-white px-4 py-2 rounded-md shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
