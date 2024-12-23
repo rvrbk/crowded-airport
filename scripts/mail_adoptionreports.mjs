@@ -1,6 +1,9 @@
 import { PrismaClient } from '@prisma/client';
 import sgMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
+import handlebars from 'handlebars';
 
 dotenv.config();
 
@@ -12,7 +15,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 // loop through them and get their clicks, also what their popularity is 
 // in terms od upvotes/downvotes and if it is about to be deleted
 
-async function fetchAmenitiesAndMail() {
+export async function fetchAmenitiesAndMail() {
     const users = await prisma.user.findMany();
     let oneWeekAgo = new Date();
     oneWeekAgo = new Date(oneWeekAgo.setDate(oneWeekAgo.getDate() - 7));
@@ -31,14 +34,11 @@ async function fetchAmenitiesAndMail() {
             }
         });
 
-        let message = `<h1>Hey ${user.name}!</h1>
-        <p>It’s that time of the week! We’re here to bring you the latest scoop on your adopted amenities at Crowded Airport. Let’s see how much sparkle your additions brought.</p>`;
-
         for (const amenity of amenities) {
             let { airport } = amenity.thing;
             let { thing } = amenity;
 
-            let navigationClicks = await prisma.navigationClicks.findMany({
+            let upvoteClicks = await prisma.upvoteClicks.findMany({
                 where: {
                     thing_id: thing.id,
                     createdAt: {
@@ -47,25 +47,27 @@ async function fetchAmenitiesAndMail() {
                 }
             });
             
-            message += `<h2>Amenity: ${thing.thing}</h2>
-            <h2>Located at ${airport.name}</h2>`;
+            let navigationClicks = await prisma.navigationClicks.findMany({
+                where: {
+                    thing_id: thing.id,
+                    createdAt: {
+                        gt: oneWeekAgo
+                    } 
+                }
+            });
 
-            if (navigationClicks.length > 0) {
-                message += `<p>Here's the good stuff:</p>
-                <ul>
-                <li>Your amenity was a beacon, guiding ${navigationClicks.length === 1 ? '<b>one</b> traveler' : `<b>${navigationClicks.length}</b> travelers`} to their destination. Way to go!</li>
-                </ul>`;
-            }
-            else {
-                message += `<li>While there might not be any new stats to report right now, your contribution is still playing a vital role for travelers using ${airport.name}. Every amenity counts, and yours is no exception, helping to make the airport experience smoother and more enjoyable.</li>`;
-            }
+            amenity.upvoteClicks = upvoteClicks;
+            amenity.navigationClicks = navigationClicks;
         }
 
-        message += `<p>Keep your eyes peeled for more updates. We appreciate all you do to help our community thrive!</p>
-        <p>Cheers to more happy travels,</p>
-        <b>Crowded Airport</b> – Where Your Contributions Make Journeys Brighter!`;
+        const templatePath = path.join(process.cwd(), 'mail-templates', 'adoptionreport.hbs');
+        const templateFile = fs.readFileSync(templatePath, 'utf8');
+        const template = handlebars.compile(templateFile);
 
-        console.log(message);
+        let message = template({
+            name: user.name,
+            amenities: amenities
+        });
 
         sgMail.send({
             to: user.email,
