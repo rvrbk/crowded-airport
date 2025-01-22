@@ -58,7 +58,6 @@ We can start with a minimal viable product. We can start with a list of airports
 We can use a user interface to allow users to add information. We can use a user interface to allow users to search for information. We can use a user interface to allow users to view information. We can use a user interface to allow users to upvote information. We can use a user interface to allow users to delete information. We can use a user interface to allow users to update information.
 
 # Ideas/brainfarts
-- Google Analytics
 - meta tags
 - Stripe payments
 - Buy me a beer
