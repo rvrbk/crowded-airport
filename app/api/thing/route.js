@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '../../lib/prisma';
 import { serialize } from 'cookie';
+import sgMail from '@sendgrid/mail';
+import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
+import handlebars from 'handlebars';
 
 export async function GET(request) {
     const { searchParams } = new URL(request.url);
@@ -90,6 +95,32 @@ export async function POST(request) {
                         user_id: user.id,
                         thing_id: newThing.id
                     }
+                });
+                
+                dotenv.config();
+
+                // Send welcome email
+                
+                sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+                const templatePath = path.join(process.cwd(), 'mail-templates', 'thanks-for-adopting.hbs');
+                const templateFile = fs.readFileSync(templatePath, 'utf8');
+                const template = handlebars.compile(templateFile);
+        
+                let message = template({
+                    name: user.name,
+                    amenity: newThing
+                });
+        
+                sgMail.send({
+                    to: user.email,
+                    from: 'noreply@crowded-airport.com',
+                    subject: 'Crowded Airport | Your adoption',
+                    html: message,
+                }).then(() => {
+                    console.log('Email sent')
+                }).catch((error) => {
+                    console.error(error)
                 });
             }
 
