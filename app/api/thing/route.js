@@ -14,26 +14,11 @@ export async function GET(request) {
     const thing = searchParams.get('thing');
    
     try {
-        const currentDate = new Date();
         const conditions = {};
 
         if (iata) {
             conditions.where = {
-                iata,
-                OR: [
-                    {
-                        from: {
-                            lte: currentDate
-                        },
-                        till: {
-                            gte: currentDate
-                        }
-                    },
-                    {
-                        from: null,
-                        till: null
-                    }
-                ]
+                iata
             };
 
             if (!thing) {
@@ -42,16 +27,17 @@ export async function GET(request) {
         }
 
         if (thing) {
-            conditions.where.thing = {
-                contains: thing
+            conditions.where = {
+                iata,
+                thing: {
+                    contains: thing
+                }
             };
         }
 
         conditions.orderBy = {
             thing: 'asc'
         }
-
-
 
         const things = await prisma.thing.findMany(conditions);
 
@@ -64,27 +50,20 @@ export async function GET(request) {
 
 export async function POST(request) {
     try {
-        const { thing, iata, latitude, longitude, userName, userEmail, from, till } = await request.json();
+        const { thing, iata, latitude, longitude, userName, userEmail } = await request.json();
 
         if (thing && iata && longitude && latitude) {
-            let data = {
+            const data = {
                 thing,
                 iata,
                 latitude,
                 longitude
             };
 
-            // Handle temporary amenity
-            if (from && till) {
-                data.from = from;
-                data.till = till;     
-            }
-
             const newThing = await prisma.thing.create({
                 data,
             });
 
-            // Handle adoption
             if (userName && userEmail) {
                 let user = await prisma.user.findUnique({
                     where: {
