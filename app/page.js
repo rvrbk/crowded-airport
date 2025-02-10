@@ -27,7 +27,12 @@ export default function Home() {
     const [popupContents, setPopupContents] = useState(null);
     const [userName, setUserName] = useState('');
     const [userEmail, setUserEmail] = useState('');
+    const [dateFrom, setDateFrom] = useState('');
+    const [dateTill, setDateTill] = useState('');
+    const [isoDateFrom, setIsoDateFrom] = useState('');
+    const [isoDateTill, setIsoDateTill] = useState('');
     const [iWantToAdoptChecked, setIwantToAdoptChecked] = useState(false);
+    const [temporaryChecked, setTemporaryChecked] = useState(false);
     
     const handleWhereAmIClick = () => {
         if (typeof window === 'undefined' || !navigator.geolocation) {
@@ -216,6 +221,11 @@ export default function Home() {
                 body.longitude = currentLocation.lng;
             }
 
+            if (temporaryChecked) {
+                body.from = isoDateFrom;
+                body.till = isoDateTill;
+            }
+
             if (iWantToAdoptChecked) {
                 body.userName = userName;
                 body.userEmail = userEmail;
@@ -236,6 +246,9 @@ export default function Home() {
                 setCurrentLocation(null);
                 setUserName('');
                 setUserEmail('');
+                setDateFrom('');
+                setDateTill('');
+                setTemporaryChecked(false);
                 setIwantToAdoptChecked(false);
 
                 setMessage({
@@ -337,6 +350,11 @@ Your contributions make it easier for everyone to navigate busy airports!</>)});
 
     const handleIwantToAdoptCheckboxClick = (checked) => {
         setIwantToAdoptChecked(checked);
+    };
+
+    const handleTemporaryCheckboxClick = (checked) => {
+        console.log(checked);
+        setTemporaryChecked(checked);
     };
 
     const setLocalUser = () => {
@@ -453,6 +471,41 @@ Your contributions make it easier for everyone to navigate busy airports!</>)});
                                     <MapPinIcon className="h-5 w-5" />
                                 </button>
                             </div>
+                            <div class="mb-3">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        onClick={(e) => handleTemporaryCheckboxClick(e.target.checked)}
+                                        checked={temporaryChecked}
+                                        className="px-4 py-2"
+                                    ></input>
+                                    <span className="ml-2">This amenity is temporary</span>
+                                </label>
+                            </div>
+                            {temporaryChecked && (<> 
+                                <input 
+                                    type="text" 
+                                    placeholder="Date from..."  
+                                    onChange={(e) => {
+                                        setDateFrom(e.target.value);
+                                        setIsoDateFrom(e.target.valueAsDate.toISOString());
+                                    }}
+                                    onFocus={(e) => {e.target.type = 'date'}} 
+                                    onBlur={(e) => {e.target.type = 'text'}} 
+                                    value={dateFrom}
+                                    className="w-full shadow-xl mb-3 px-4 py-2 border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                                <input 
+                                    type="text" 
+                                    placeholder="Date till..."  
+                                    onChange={(e) => {
+                                        setDateTill(e.target.value);
+                                        setIsoDateTill(e.target.valueAsDate.toISOString());
+                                    }}
+                                    onFocus={(e) => {e.target.type = 'date'}} 
+                                    onBlur={(e) => {e.target.type = 'text'}} 
+                                    value={dateTill}
+                                    className="w-full shadow-xl mb-3 px-4 py-2 border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                            </>)}
                             <div className="flex items-center mb-3">
                                 <label>
                                 <input

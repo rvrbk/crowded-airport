@@ -43,6 +43,8 @@ model Thing {
   downvote_clicks   DownvoteClicks[]
   createdAt         DateTime           @default(now())
   UserThing         UserThing[]
+  from              DateTime?
+  till              DateTime?
 
   @@map("Thing")
 }
