@@ -22,16 +22,16 @@ export async function GET(request) {
                 iata,
                 OR: [
                     {
-                        from: {
+                        fromDate: {
                             lte: currentDate
                         },
-                        till: {
+                        tillDate: {
                             gte: currentDate
                         }
                     },
                     {
-                        from: null,
-                        till: null
+                        fromDate: null,
+                        tillDate: null
                     }
                 ]
             };
@@ -64,7 +64,7 @@ export async function GET(request) {
 
 export async function POST(request) {
     try {
-        const { thing, iata, latitude, longitude, userName, userEmail, from, till } = await request.json();
+        const { thing, iata, latitude, longitude, userName, userEmail, fromDate, tillDate } = await request.json();
 
         if (thing && iata && longitude && latitude) {
             let data = {
@@ -75,9 +75,9 @@ export async function POST(request) {
             };
 
             // Handle temporary amenity
-            if (from && till) {
-                data.from = from;
-                data.till = till;     
+            if (fromDate && tillDate) {
+                data.fromDate = fromDate;
+                data.tillDate = tillDate;
             }
 
             const newThing = await prisma.thing.create({

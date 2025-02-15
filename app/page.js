@@ -222,8 +222,8 @@ export default function Home() {
             }
 
             if (temporaryChecked) {
-                body.from = isoDateFrom;
-                body.till = isoDateTill;
+                body.fromDate = isoDateFrom;
+                body.tillDate = isoDateTill;
             }
 
             if (iWantToAdoptChecked) {
