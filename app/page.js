@@ -471,7 +471,7 @@ Your contributions make it easier for everyone to navigate busy airports!</>)});
                                     <MapPinIcon className="h-5 w-5" />
                                 </button>
                             </div>
-                            <div class="mb-3 hidden">
+                            <div class="mb-3">
                                 <label>
                                     <input
                                         type="checkbox"
@@ -483,28 +483,28 @@ Your contributions make it easier for everyone to navigate busy airports!</>)});
                                 </label>
                             </div>
                             {temporaryChecked && (<> 
-                                <input 
-                                    type="text" 
-                                    placeholder="Date from..."  
-                                    onChange={(e) => {
-                                        setDateFrom(e.target.value);
-                                        setIsoDateFrom(e.target.valueAsDate.toISOString());
-                                    }}
-                                    onFocus={(e) => {e.target.type = 'date'}} 
-                                    onBlur={(e) => {e.target.type = 'text'}} 
-                                    value={dateFrom}
-                                    className="w-full shadow-xl mb-3 px-4 py-2 border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-                                <input 
-                                    type="text" 
-                                    placeholder="Date till..."  
-                                    onChange={(e) => {
-                                        setDateTill(e.target.value);
-                                        setIsoDateTill(e.target.valueAsDate.toISOString());
-                                    }}
-                                    onFocus={(e) => {e.target.type = 'date'}} 
-                                    onBlur={(e) => {e.target.type = 'text'}} 
-                                    value={dateTill}
-                                    className="w-full shadow-xl mb-3 px-4 py-2 border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                                <div class="mb-3 flex justify-between">
+                                    <label class="flex items-center">From</label>
+                                    <input 
+                                        type="date"   
+                                        onChange={(e) => {
+                                            setDateFrom(e.target.value);
+                                            setIsoDateFrom(e.target.valueAsDate.toISOString());
+                                        }}
+                                        value={dateFrom}
+                                        className="w-4/5 shadow-xl px-4 py-2 border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                                </div>
+                                <div class="mb-3 flex justify-between">
+                                    <label class="flex items-center">Till</label>
+                                    <input 
+                                        type="date"   
+                                        onChange={(e) => {
+                                            setDateTill(e.target.value);
+                                            setIsoDateTill(e.target.valueAsDate.toISOString());
+                                        }}
+                                        value={dateTill}
+                                        className="w-4/5 shadow-xl px-4 py-2 border color-black border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                                </div>
                             </>)}
                             <div className="flex items-center mb-3">
                                 <label>
