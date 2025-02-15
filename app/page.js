@@ -471,7 +471,7 @@ Your contributions make it easier for everyone to navigate busy airports!</>)});
                                     <MapPinIcon className="h-5 w-5" />
                                 </button>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 hidden">
                                 <label>
                                     <input
                                         type="checkbox"

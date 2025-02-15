@@ -20,20 +20,20 @@ export async function GET(request) {
         if (iata) {
             conditions.where = {
                 iata,
-                OR: [
-                    {
-                        fromDate: {
-                            lte: currentDate
-                        },
-                        tillDate: {
-                            gte: currentDate
-                        }
-                    },
-                    {
-                        fromDate: null,
-                        tillDate: null
-                    }
-                ]
+                // OR: [
+                //     {
+                //         fromDate: {
+                //             lte: currentDate
+                //         },
+                //         tillDate: {
+                //             gte: currentDate
+                //         }
+                //     },
+                //     {
+                //         fromDate: null,
+                //         tillDate: null
+                //     }
+                // ]
             };
 
             if (!thing) {
@@ -50,8 +50,6 @@ export async function GET(request) {
         conditions.orderBy = {
             thing: 'asc'
         }
-
-
 
         const things = await prisma.thing.findMany(conditions);
 
