@@ -49,7 +49,7 @@ const FlyToLocation = ({ coordinates }) => {
 const Map = ({coordinates, selectedThing, similarThings, appleDevice, setLoading, setMessage}) => {
     return (
         <MapContainer center={[37, -50]} zoom={3} className="h-full w-full absolute inset-0 z-0">
-            <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" attribution='&copy; <a href="https://carto.com/">CartoDB</a>' />
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' />
             <FlyToLocation coordinates={coordinates} />
             {coordinates && selectedThing && (
                 <Marker 
