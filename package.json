@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "pm2 describe crowded-airport > /dev/null && pm2 stop crowded-airport; pm2 start \"npx next start\" --name crowded-airport",
+    "start": "next start",
     "lint": "next lint",
     "seed_airports": "node prisma/seed_airports.mjs",
     "seed_amenities": "node prisma/seed_amenities.mjs",
