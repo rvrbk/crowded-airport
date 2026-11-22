@@ -38,6 +38,7 @@ export default function RootLayout({ children }) {
                 <meta name="twitter:image" content={metadata.openGraph.image} />
 
                 <link rel="icon" href="/favicon.ico" />
+                <script defer src="https://lore.verbeek.ug/heat.js" data-key="HnbiiR1X9h7VqgAAohJpG7rOpyXSi2mQ" data-lore-heat></script>
             </head>
             <body className="h-dvh">
                 <GoogleAnalytics trackPageViews />
