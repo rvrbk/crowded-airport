@@ -3,3 +3,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Light map with a soft indigo tint: recolor the OpenStreetMap tiles only (markers/popups unaffected) */
+.leaflet-tile-pane {
+    filter: grayscale(1) brightness(1.05) sepia(0.5) hue-rotate(190deg) saturate(1.6);
+}
+.leaflet-container {
+    background: #e0e7ff;
+}
