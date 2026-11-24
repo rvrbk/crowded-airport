@@ -33,13 +33,13 @@ export const metadata = {
         siteName,
         title: siteName,
         description: siteDescription,
-        images: [{ url: "/graph.jpg", alt: siteName }],
+        images: [{ url: "/og.png", width: 1200, height: 630, alt: siteName }],
     },
     twitter: {
         card: "summary_large_image",
         title: siteName,
         description: siteDescription,
-        images: ["/graph.jpg"],
+        images: ["/og.png"],
     },
 };
 
@@ -74,7 +74,7 @@ const structuredData = {
                 price: "0",
                 priceCurrency: "USD",
             },
-            image: `${siteUrl}/graph.jpg`,
+            image: `${siteUrl}/og.png`,
             isPartOf: { "@id": `${siteUrl}/#website` },
         },
     ],
@@ -84,7 +84,6 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <head>
-                <link rel="icon" href="/favicon.ico" />
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}

@@ -39,13 +39,13 @@ export async function generateMetadata({ params }) {
             siteName: "Crowded Airport",
             title,
             description,
-            images: [{ url: "/graph.jpg", alt: "Crowded Airport" }],
+            images: [{ url: "/og.png", width: 1200, height: 630, alt: "Crowded Airport" }],
         },
         twitter: {
             card: "summary_large_image",
             title,
             description,
-            images: ["/graph.jpg"],
+            images: ["/og.png"],
         },
     };
 }
