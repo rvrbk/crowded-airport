@@ -1,47 +1,98 @@
-"use client";
-
 import "./globals.css";
-import { GoogleAnalytics } from "nextjs-google-analytics";
+import Analytics from "./components/Analytics";
 
-const metadata = {
-  title: "Crowded Airport",
-  description: "Find your way on any airport in the world.",
-  keywords: "airport, coffeeshop, toilet, lost and found, crowd sourced, crowd, finder, aviation, travel, bags, belts, security",
-  openGraph: {
-    type: "website",
-    url: "https://crowded-airport.com",
-    title: "Crowded Airport",
-    description: "Find your way on any airport in the world.",
-    image: "https://crowded-airport.com/graph.jpg",
-  },
+const siteUrl = "https://crowded-airport.com";
+const siteName = "Crowded Airport";
+const siteDescription = "Find your way on any airport in the world. A crowdsourced map of coffee shops, toilets, lost and found, security and more, added and rated by travellers.";
+
+export const metadata = {
+    metadataBase: new URL(siteUrl),
+    title: {
+        default: "Crowded Airport | Crowdsourced airport maps and amenities",
+        template: "%s | Crowded Airport",
+    },
+    description: siteDescription,
+    applicationName: siteName,
+    keywords: ["airport", "airport map", "coffeeshop", "toilet", "lost and found", "crowd sourced", "crowd", "finder", "aviation", "travel", "bags", "belts", "security"],
+    alternates: {
+        canonical: "/",
+    },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+        },
+    },
+    openGraph: {
+        type: "website",
+        url: "/",
+        siteName,
+        title: siteName,
+        description: siteDescription,
+        images: [{ url: "/graph.jpg", alt: siteName }],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: siteName,
+        description: siteDescription,
+        images: ["/graph.jpg"],
+    },
+};
+
+export const viewport = {
+    width: "device-width",
+    initialScale: 1,
+};
+
+const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "WebSite",
+            "@id": `${siteUrl}/#website`,
+            url: siteUrl,
+            name: siteName,
+            description: siteDescription,
+            inLanguage: "en",
+        },
+        {
+            "@type": "WebApplication",
+            "@id": `${siteUrl}/#app`,
+            url: siteUrl,
+            name: siteName,
+            description: siteDescription,
+            applicationCategory: "TravelApplication",
+            operatingSystem: "Any",
+            browserRequirements: "Requires JavaScript",
+            isAccessibleForFree: true,
+            offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "USD",
+            },
+            image: `${siteUrl}/graph.jpg`,
+            isPartOf: { "@id": `${siteUrl}/#website` },
+        },
+    ],
 };
 
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <head>
-                <title>{metadata.title}</title>
-                <meta name="description" content={metadata.description} />
-                <meta name="keywords" content={metadata.keywords} />
-                <meta name="robots" content="index, follow" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-                <meta property="og:type" content={metadata.openGraph.type} />
-                <meta property="og:url" content={metadata.openGraph.url} />
-                <meta property="og:title" content={metadata.openGraph.title} />
-                <meta property="og:description" content={metadata.openGraph.description} />
-                <meta property="og:image" content={metadata.openGraph.image} />
-                
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={metadata.openGraph.title} />
-                <meta name="twitter:description" content={metadata.openGraph.description} />
-                <meta name="twitter:image" content={metadata.openGraph.image} />
-
                 <link rel="icon" href="/favicon.ico" />
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+                />
                 <script defer src="https://lore.verbeek.ug/heat.js" data-key="HnbiiR1X9h7VqgAAohJpG7rOpyXSi2mQ" data-lore-heat></script>
             </head>
             <body className="h-dvh">
-                <GoogleAnalytics trackPageViews />
+                <Analytics />
                 {children}
             </body>
         </html>

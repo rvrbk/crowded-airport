@@ -168,6 +168,15 @@ export default function Home() {
                 if (response.ok) {
                     const data = await response.json();
                     setAirports(data);
+
+                    const requestedIata = new URLSearchParams(window.location.search).get('airport');
+                    const requestedAirport = requestedIata
+                        ? data.find((airport) => airport.iata === requestedIata.toUpperCase())
+                        : null;
+
+                    if (requestedAirport) {
+                        handleAirportChange(requestedAirport);
+                    }
                 } else {
                     setMessage('Failed to get data');
                 } 
@@ -229,6 +238,14 @@ Your contributions make it easier for everyone to navigate busy airports!</>)});
         <div className={`flex items-center justify-center h-dvh bg-gray-100`}>
             <div className={`${!loading ? 'hidden' : ''} flex items-center justify-center h-dvh fixed inset-0 z-50 bg-white bg-opacity-70`}>
                 <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-indigo-500 border-solid"></div>
+            </div>
+            <div className="sr-only">
+                <h1>Crowded Airport: find your way on any airport in the world</h1>
+                <p>
+                    Crowded Airport is a free, crowdsourced map of airport amenities. Search for an airport by name, city, country or IATA code,
+                    then find coffee shops, restaurants, toilets, lost and found desks, security checkpoints, baggage belts and more.
+                    Travellers add what they know about an airport and vote on what is correct, so the information stays current.
+                </p>
             </div>
             <Map 
                 coordinates={coordinates} 

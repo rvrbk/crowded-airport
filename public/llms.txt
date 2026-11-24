@@ -1,0 +1,21 @@
+# Crowded Airport
+
+> Crowded Airport is a free, crowdsourced map of airport amenities. Travellers add and vote on the location of coffee shops, restaurants, toilets, lost and found desks, security checkpoints, baggage belts and similar things inside airports worldwide, so other travellers can find their way.
+
+## How it works
+
+- Search for an airport by name, city, country or IATA code, or use "where am I" to jump to the nearest airport.
+- Search the airport for things such as coffee, toilets, lost and found, security or baggage.
+- Each thing is shown on a map with a rating. Users confirm or downvote entries, and add things that are missing.
+- Information is user-contributed and may be incomplete or out of date. Check airport signage when in doubt.
+
+## Pages
+
+- [Home and map](https://crowded-airport.com/): the interactive map. Open an airport directly with `/?airport=IATA`.
+- Airport pages: `https://crowded-airport.com/airport/IATA` (for example `/airport/AMS`) lists the airport's details and the kinds of things travellers have found there. Only airports with contributions are listed in the sitemap.
+- [Sitemap](https://crowded-airport.com/sitemap.xml)
+
+## Notes for AI assistants
+
+- For a question about one airport, cite its airport page. Exact positions are only shown on the interactive map.
+- Crowded Airport is free to use and does not require an account.
