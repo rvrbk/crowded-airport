@@ -96,10 +96,15 @@ const PopupContents = ({thing, appleDevice, setLoading, setMessage}) => {
         }
     };
     
+    const verifiedAt = thing.lastVerifiedAt || thing.createdAt;
+    const verifiedDays = verifiedAt ? Math.floor((Date.now() - new Date(verifiedAt).getTime()) / 86400000) : null;
+    const verifiedLabel = verifiedDays === null ? null : verifiedDays < 1 ? 'Verified today' : `Verified ${verifiedDays} day${verifiedDays === 1 ? '' : 's'} ago`;
+
     return (
         <div className="min-w-[200px] flex flex-col space-y-2 p-2">
             <div className="flex-grow mb-4">
                 <h3 className="text-indigo-500 text-2xl">{thing.thing}</h3>
+                {verifiedLabel && <p className="text-xs text-gray-500 mt-1">{verifiedLabel}</p>}
             </div>
             <div className="mt-auto flex flex-col w-full space-y-2">
                 <a

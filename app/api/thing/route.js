@@ -15,11 +15,12 @@ export async function GET(request) {
    
     try {
         const currentDate = new Date();
-        const conditions = {};
+        const conditions = { where: { status: 'active' } };
 
         if (iata) {
             conditions.where = {
                 iata,
+                status: 'active',
                 OR: [
                     {
                         fromDate: {
@@ -69,7 +70,9 @@ export async function POST(request) {
                 thing,
                 iata,
                 latitude,
-                longitude
+                longitude,
+                source: 'user',
+                lastVerifiedAt: new Date()
             };
 
             // Handle temporary amenity
@@ -181,11 +184,10 @@ export async function PATCH(request) {
             });
 
             if (votes === 'up') {
+                updatedData.lastVerifiedAt = new Date();
+
                 if (existingThing.votes < 5) {
                     updatedData.votes = existingThing.votes + 1;
-                }
-                else {
-                    update = false;
                 }
             }
 

@@ -9,6 +9,7 @@
     "lint": "next lint",
     "seed_airports": "node prisma/seed_airports.mjs",
     "seed_amenities": "node prisma/seed_amenities.mjs",
+    "refresh_amenities": "node scripts/refresh_amenities.mjs",
     "mail_adoptionreports": "node scripts/mail_adoptionreports.mjs",
     "cron": "node scripts/cron.mjs"
   },

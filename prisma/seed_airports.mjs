@@ -11,9 +11,6 @@ function delay(ms) {
 }
 
 async function fetchAndInsertAirports() {
-  // Empty the table
-  await prisma.airport.deleteMany({});
-  console.log('Airport table emptied.');
 
   // Track the number of requests to adhere to the rate limit
   let requestCount = 0;
@@ -51,20 +48,22 @@ async function fetchAndInsertAirports() {
       // Insert airports data into the database
       await Promise.all(
         airports.data.map(async (airport) => {
-          console.log(airport.attributes);
           if (airport.attributes.city !== null) {
-            return prisma.airport.create({
-              data: {
+            const data = {
               name: airport.attributes.name,
               city: airport.attributes.city,
               country: airport.attributes.country,
-              iata: airport.attributes.iata,
               icao: airport.attributes.icao,
               latitude: parseFloat(airport.attributes.latitude),
               longitude: parseFloat(airport.attributes.longitude),
               altitude: parseInt(airport.attributes.altitude),
               timezone: airport.attributes.timezone,
-              },
+            };
+
+            return prisma.airport.upsert({
+              where: { iata: airport.attributes.iata },
+              update: data,
+              create: { ...data, iata: airport.attributes.iata },
             });
           }
         })

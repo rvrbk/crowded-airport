@@ -24,6 +24,7 @@ model Airport {
   longitude Float
   altitude  Int
   timezone  String?
+  lastRefreshedAt DateTime?
   things    Thing[]
 
   @@map("Airport")
@@ -45,7 +46,13 @@ model Thing {
   UserThing         UserThing[]
   fromDate          DateTime?
   tillDate          DateTime?
+  placeId           String?            @unique
+  source            String             @default("user")
+  status            String             @default("active")
+  lastVerifiedAt    DateTime?
+  missedRefreshes   Int                @default(0)
 
+  @@index([iata, status])
   @@map("Thing")
 }
 

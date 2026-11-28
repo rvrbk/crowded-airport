@@ -3,6 +3,7 @@ import sgMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
+import { pathToFileURL } from 'url';
 import handlebars from 'handlebars';
 
 dotenv.config();
@@ -20,7 +21,7 @@ export async function fetchAmenitiesAndMail() {
     let oneWeekAgo = new Date();
     oneWeekAgo = new Date(oneWeekAgo.setDate(oneWeekAgo.getDate() - 7));
 
-    users.map(async user => {
+    for (const user of users) {
         let amenities = await prisma.UserThing.findMany({
             where: {
                 user_id: user.id
@@ -69,21 +70,25 @@ export async function fetchAmenitiesAndMail() {
             amenities: amenities
         });
 
-        sgMail.send({
-            to: user.email,
-            from: 'noreply@crowded-airport.com',
-            subject: 'Crowded Airport | Weekly update',
-            html: message,
-        }).then(() => {
-            console.log('Email sent')
-        }).catch((error) => {
-            console.error(error)
-        });
-    });
+        try {
+            await sgMail.send({
+                to: user.email,
+                from: 'noreply@crowded-airport.com',
+                subject: 'Crowded Airport | Weekly update',
+                html: message,
+            });
+            console.log('Email sent');
+        } catch (error) {
+            console.error(error);
+        }
+    }
 }
 
-fetchAmenitiesAndMail().catch((e) => {
-    console.error(e);
-}).finally(async () => {
-    await prisma.$disconnect();
-});
+// Only run when executed directly (npm run mail_adoptionreports), not when imported by cron.mjs
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+    fetchAmenitiesAndMail().catch((e) => {
+        console.error(e);
+    }).finally(async () => {
+        await prisma.$disconnect();
+    });
+}
